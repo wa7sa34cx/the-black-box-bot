@@ -1,6 +1,17 @@
 [package]
 name = "hold-my-beer-bot"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2018"
+authors = ["Alex Black <wa7@sa34.cx>"]
+license = "MIT"
+repository = "https://github.com/wa7sa34cx/hold-my-beer-bot"
+readme = "README.md"
 
 [dependencies]
+dotenv = "0.15.0"
+teloxide = { version = "0.5", features = ["macros", "auto-send"] }
+teloxide-macros = "0.4"
+log = "0.4"
+pretty_env_logger = "0.4"
+tokio = { version =  "1.8", features = ["rt-multi-thread", "macros"] }
+diesel = { version = "1.4", features = ["sqlite"] }
