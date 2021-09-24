@@ -1,3 +1,6 @@
+// See example
+// https://github.com/teloxide/teloxide/tree/dev/examples/sqlite_remember_bot
+
 #[tokio::main]
 async fn main() {
     run().await;
