@@ -1,6 +1,10 @@
-use hold_my_beer_bot::run;
-
 #[tokio::main]
 async fn main() {
-    run().await
+    run().await;
+}
+
+async fn run() {
+    // let bar = db::get_bar();
+    // dbg!(bar);
+    println!("hello");
 }
