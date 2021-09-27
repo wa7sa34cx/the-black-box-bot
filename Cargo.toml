@@ -11,9 +11,13 @@ keywords = ["bot", "telegram"]
 readme = "README.md"
 
 [dependencies]
-dotenv = "0.15.0"
+dotenv = "0.15"
 teloxide = { version = "0.5", features = ["macros", "auto-send"] }
 teloxide-macros = "0.4"
 log = "0.4"
 pretty_env_logger = "0.4"
-tokio = { version =  "1.8", features = ["rt-multi-thread", "macros"] }
+tokio = { version =  "1.12", features = ["rt-multi-thread", "macros"] }
+sqlx = { version = "0.5", features = [ "sqlite", "runtime-tokio-rustls" ] }
+anyhow = "1.0"
+sql-builder = "3.1"
+
