@@ -1,6 +1,6 @@
 [package]
-name = "hold-my-beer-bot"
-description = "A Telegram bot which can hold your beer"
+name = "the-black-box-bot"
+description = "Put something in the Black Box, then take it!"
 version = "0.1.1"
 edition = "2018"
 authors = ["Alex Black <wa7@sa34.cx>"]

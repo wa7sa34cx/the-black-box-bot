@@ -574,21 +574,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
 
 [[package]]
-name = "hold-my-beer-bot"
-version = "0.1.1"
-dependencies = [
- "anyhow",
- "dotenv",
- "log",
- "pretty_env_logger",
- "sql-builder",
- "sqlx",
- "teloxide",
- "teloxide-macros",
- "tokio",
-]
-
-[[package]]
 name = "http"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1676,6 +1661,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dfed899f0eb03f32ee8c6a0aabdb8a7949659e3466561fc0adf54e26d88c5f4"
 dependencies = [
  "winapi-util",
+]
+
+[[package]]
+name = "the-black-box-bot"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "dotenv",
+ "log",
+ "pretty_env_logger",
+ "sql-builder",
+ "sqlx",
+ "teloxide",
+ "teloxide-macros",
+ "tokio",
 ]
 
 [[package]]
