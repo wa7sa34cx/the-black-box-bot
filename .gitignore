@@ -1,4 +1,4 @@
 /target
-/images
+/auxiliary
 .env
 *.db*

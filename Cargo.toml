@@ -5,10 +5,12 @@ version = "0.1.1"
 edition = "2018"
 authors = ["Alex Black <wa7@sa34.cx>"]
 license = "MIT OR Apache-2.0"
-repository = "https://github.com/wa7sa34cx/hold-my-beer-bot"
-homepage = "https://github.com/wa7sa34cx/hold-my-beer-bot"
+repository = "https://github.com/wa7sa34cx/the-black-box-bot"
 keywords = ["bot", "telegram"]
 readme = "README.md"
+
+# See more keys and their definitions at
+# https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 dotenv = "0.15"
