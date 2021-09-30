@@ -46,6 +46,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "async_once"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "58f8f7a882f8fffee0bdbb0580033b01613b50781e03c02713da0599ed90b595"
+
+[[package]]
 name = "atoi"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1668,8 +1674,11 @@ name = "the-black-box-bot"
 version = "0.1.1"
 dependencies = [
  "anyhow",
+ "async_once",
  "dotenv",
+ "lazy_static",
  "log",
+ "once_cell",
  "pretty_env_logger",
  "sql-builder",
  "sqlx",

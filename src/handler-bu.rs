@@ -27,10 +27,6 @@ type Bot = AutoSend<DefaultParseMode<teloxide::Bot>>;
 
 /// Main handler
 pub async fn handler(cx: UpdateWithCx<Bot, Message>, command: Command) -> Result<()> {
-    //create sqlite pool connection
-    dotenv().ok();
-    let pool = SqlitePool::connect(&env::var("DATABASE_URL")?).await?;
-
     match command {
         Command::Help => cx.answer(Command::descriptions()).await?,
         Command::Put(text) => cx.answer(answer_put(text).await).await?,

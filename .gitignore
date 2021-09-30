@@ -2,3 +2,4 @@
 /auxiliary
 .env
 *.db*
+.DS_Store
