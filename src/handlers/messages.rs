@@ -1,3 +1,5 @@
-pub async fn handler() {
-    println!("hello!");
-}
+//! Handler for messages
+
+use teloxide::dispatching::DispatcherHandler;
+
+pub struct Handler {}

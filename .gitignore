@@ -1,5 +1,5 @@
 /target
 /auxiliary
 .env
-*.db*
+/db/prod/*.db*
 .DS_Store
