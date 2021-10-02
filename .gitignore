@@ -1,2 +1,5 @@
 /target
-/images
+/auxiliary
+.env
+/db/prod/*.db*
+.DS_Store

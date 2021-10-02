@@ -1,8 +1,27 @@
 [package]
-name = "hold-my-beer-bot"
-version = "0.1.0"
+name = "the-black-box-bot"
+description = "Put something in the Black Box, then take it!"
+version = "0.1.1"
 edition = "2018"
+authors = ["Alex Black <wa7@sa34.cx>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/wa7sa34cx/the-black-box-bot"
+keywords = ["bot", "telegram"]
+readme = "README.md"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# See more keys and their definitions at
+# https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+dotenv = "0.15"
+teloxide = { version = "0.5", features = ["macros", "auto-send", "ctrlc_handler"] }
+teloxide-macros = "0.4"
+log = "0.4"
+pretty_env_logger = "0.4"
+tokio = { version =  "1.12", features = ["rt-multi-thread", "macros"] }
+sqlx = { version = "0.5", features = [ "sqlite", "runtime-tokio-rustls", "migrate" ] }
+anyhow = "1.0"
+sql-builder = "3.1"
+lazy_static = "1.4"
+async_once = "0.2"
+once_cell = "1.8"
