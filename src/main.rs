@@ -1,5 +1,5 @@
 mod db;
-mod handlers;
+// mod handlers;
 
 use anyhow::Result;
 use dotenv::dotenv;
