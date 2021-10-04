@@ -1,11 +1,12 @@
-mod db;
-// mod handlers;
+// mod db;
+mod handlers;
 
 use anyhow::Result;
 use dotenv::dotenv;
-// use handlers::messages;
+use handlers::messages;
 use std::env;
 use teloxide::{prelude::*, types::ParseMode};
+// use teloxide::utils::markdown;
 
 async fn run() -> Result<()> {
     teloxide::enable_logging!();
@@ -17,6 +18,14 @@ async fn run() -> Result<()> {
         .auto_send();
 
     log::info!("Starting bot...");
+
+    teloxide::repl(bot, messages::handler).await;
+
+    // teloxide::repl(bot, |cx| async move {
+    //     cx.answer(markdown::escape(cx.update.text().unwrap_or("Don't understand"))).await?;
+    //     respond(())
+    // })
+    // .await;
 
     // Dispatcher::new(bot)
     //     .messages_handler(messages::handler)

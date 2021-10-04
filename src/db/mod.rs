@@ -87,11 +87,7 @@ mod tests {
     async fn test_look() {
         let db = Db::new("sqlite://db/test/blackbox.db").await;
 
-        let item = Item {
-            id: 0,
-            chat_id: 13,
-            name: String::new(),
-        };
+        let item = Item::new(13, "");
 
         let items = db.look(&item).await.unwrap();
 
@@ -109,11 +105,7 @@ mod tests {
     async fn test_put_and_take() {
         let db = Db::new("sqlite://db/test/blackbox.db").await;
 
-        let item = Item {
-            id: 0,
-            chat_id: 99,
-            name: String::from("test"),
-        };
+        let item = Item::new(13, "test");
 
         assert_eq!(db.put(&item).await.unwrap(), ());
         assert_eq!(db.take(&item).await.unwrap(), ());
