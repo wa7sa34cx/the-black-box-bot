@@ -6,6 +6,7 @@ use teloxide::{prelude::*, adaptors::DefaultParseMode};
 use teloxide::utils::{command::BotCommand, markdown};
 
 #[derive(BotCommand, PartialEq, Debug)]
+#[command(rename = "lowercase")]
 pub enum Command {
     Help,
     Put(String),
