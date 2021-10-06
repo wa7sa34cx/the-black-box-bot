@@ -89,6 +89,17 @@ impl Db {
 
         Ok(row.0)
     }
+
+    /// Delete all items
+    pub async fn shake(&self, chat_id: i64) -> Result<()> {
+        let sql = SqlBuilder::delete_from("items")
+            .and_where_eq("chat_id", chat_id)
+            .sql()?;
+
+        sqlx::query(&sql).execute(&self.pool).await?;
+
+        Ok(())
+    }
 }
 
 #[cfg(test)]

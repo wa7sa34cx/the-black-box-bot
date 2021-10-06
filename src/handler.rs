@@ -12,10 +12,10 @@ lazy_static! {
     static ref DB: AsyncOnce<Db> = AsyncOnce::new(async { Db::from_env().await });
 }
 
-/// All bot commands
 #[derive(BotCommand, PartialEq, Debug)]
 #[command(rename = "lowercase")]
 pub enum Command {
+    Start,
     Help,
     Put(String),
     Take(String),
@@ -33,19 +33,20 @@ pub async fn handler(cx: Cx) -> Result<()> {
 
     let text = cx.update.text();
     if text.is_none() {
-        answer(&cx, "I don't know what to reply 🤷‍♂️ try /help command").await?;
+        answer(&cx, "I don't know what to reply 🤷‍♂️\nTry /help command").await?;
         return Ok(());
     }
 
     let text = text.unwrap();
     let command = Command::parse(text, "bot_name");
     if command.is_err() {
-        answer(&cx, "This is not a command 😕").await?;
+        answer(&cx, "I don't know this command 😕").await?;
         return Ok(());
     }
 
     let command = command.unwrap();
     let ans = match command {
+        Command::Start => start().await?,
         Command::Help => help().await?,
         Command::Put(text) => put(chat_id, &text).await?,
         Command::Take(text) => take(chat_id, &text).await?,
@@ -59,9 +60,25 @@ pub async fn handler(cx: Cx) -> Result<()> {
     Ok(())
 }
 
+// Display greeting
+async fn start() -> Result<String> {
+    Ok(format!(
+        "This is the *Black Box*\\. You can hold any items in it\\.\nType /help for help\\.",
+    ))
+}
+
 // Display help info
 async fn help() -> Result<String> {
-    Ok(format!("HELP"))
+    Ok(format!(
+        "These commands are supported:\n\n\
+        /put *some item* \\- Put item\n\
+        /take *some item* \\- Take item\n\
+        /look \\- Look into\n\
+        /shake \\- Shake items out\n\
+        /count \\- Count items\n\
+        /help \\- Display help info
+    "
+    ))
 }
 
 // Put item
@@ -90,7 +107,7 @@ async fn take(chat_id: i64, text: &str) -> Result<String> {
         Err(e) => {
             log::warn!("{}", e);
             Ok(format!("There is no such item in the Black Box 🤷‍♂️"))
-        },
+        }
         Ok(_) => Ok(format!(
             "You took *{}* out of the Black Box",
             markdown::escape(text)
@@ -137,7 +154,7 @@ async fn count(chat_id: i64) -> Result<String> {
 
 // Shake out
 async fn shake(chat_id: i64) -> Result<String> {
-    let count = DB.get().await.shake(chat_id).await?;
+    DB.get().await.shake(chat_id).await?;
 
     Ok(format!("The Black Box is now empty"))
 }
