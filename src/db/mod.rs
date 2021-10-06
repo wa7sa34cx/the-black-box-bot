@@ -36,9 +36,9 @@ impl Db {
     }
 
     /// Get all items by chat_id
-    pub async fn look(&self, item: &Item) -> Result<Vec<Item>> {
+    pub async fn look(&self, chat_id: i64) -> Result<Vec<Item>> {
         let sql = SqlBuilder::select_from("items")
-            .and_where_eq("chat_id", item.chat_id)
+            .and_where_eq("chat_id", chat_id)
             .order_asc("id")
             .sql()?;
 
@@ -76,6 +76,18 @@ impl Db {
         sqlx::query(&sql).execute(&self.pool).await?;
 
         Ok(())
+    }
+
+    /// Count items
+    pub async fn count(&self, chat_id: i64) -> Result<i64> {
+        let sql = SqlBuilder::select_from("items")
+            .count("id")
+            .and_where_eq("chat_id", chat_id)
+            .sql()?;
+
+        let row: (i64,) = sqlx::query_as(&sql).fetch_one(&self.pool).await?;
+
+        Ok(row.0)
     }
 }
 
