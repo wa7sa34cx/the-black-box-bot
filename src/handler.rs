@@ -76,8 +76,8 @@ async fn start() -> Result<String> {
 async fn help() -> Result<String> {
     Ok(format!(
         "These commands are supported:\n\n\
-        /put *some item* \\- Put item\n\n\
-        /take *some item* \\- Take item\n\n\
+        /put <some item> \\- Put item\n\n\
+        /take <some item> \\- Take item\n\n\
         /look \\- Look into\n\n\
         /shake \\- Shake items out\n\n\
         /count \\- Count items\n\n\
@@ -89,7 +89,7 @@ async fn help() -> Result<String> {
 // Put item
 async fn put(chat_id: i64, text: &str) -> Result<String> {
     if text.is_empty() {
-        return Ok(format!("Please use this format:\n\n /put *some item*"));
+        return Ok(format!("Please use this format:\n\n /put *<some item>*"));
     }
 
     let item = Item::new(chat_id, text.trim());
@@ -104,7 +104,7 @@ async fn put(chat_id: i64, text: &str) -> Result<String> {
 // Take item
 async fn take(chat_id: i64, text: &str) -> Result<String> {
     if text.is_empty() {
-        return Ok(format!("Please use this format:\n\n /take *some item*"));
+        return Ok(format!("Please use this format:\n\n /take *<some item>*"));
     }
 
     let item = Item::new(chat_id, text);
@@ -167,7 +167,7 @@ async fn shake(chat_id: i64) -> Result<String> {
 // Delay for testing concurrency
 async fn delay(text: &str) -> Result<String> {
     let secs: u64 = match text.parse() {
-        Err(_) => return Ok(format!("Please use this format:\n\n /delay *secs*")),
+        Err(_) => return Ok(format!("Please use this format:\n\n /delay *<secs>*")),
         Ok(num) => num,
     };
 
