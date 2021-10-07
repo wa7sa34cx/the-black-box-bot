@@ -173,7 +173,7 @@ async fn delay(text: &str) -> Result<String> {
 
     if secs > 60 {
         return Ok(format!("Maximum value is 60 secs"));
-    } 
+    }
 
     // thread::sleep(Duration::from_secs(secs));
     sleep(Duration::from_secs(secs)).await;

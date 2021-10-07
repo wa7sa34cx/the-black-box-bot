@@ -109,7 +109,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_db() {
-        let db = Db::new("sqlite://db/test/blackbox.db").await;
+        let db = Db::from_env().await;
         let chat_id = 42;
 
         test_put(&db, chat_id).await;
@@ -120,41 +120,18 @@ mod tests {
     }
 
     async fn test_put(db: &Db, chat_id: i64) {
-        let item = Item {
-            id: 1,
-            chat_id,
-            name: "apple".to_string(),
-        };
+        let item1 = Item::new(chat_id, "apple");
+        let item2 = Item::new(chat_id, "pear");
 
-        assert_eq!(db.put(&item).await.unwrap(), ());
-
-        let item = Item {
-            id: 2,
-            chat_id,
-            name: "pear".to_string(),
-        };
-
-        assert_eq!(db.put(&item).await.unwrap(), ());
+        assert_eq!(db.put(&item1).await.unwrap(), ());
+        assert_eq!(db.put(&item2).await.unwrap(), ());
     }
 
     async fn test_look(db: &Db, chat_id: i64) {
         let items = db.look(chat_id).await.unwrap();
 
-        assert_eq!(
-            items,
-            vec![
-                Item {
-                    id: 1,
-                    chat_id,
-                    name: "apple".to_string(),
-                },
-                Item {
-                    id: 2,
-                    chat_id,
-                    name: "pear".to_string(),
-                }
-            ]
-        );
+        assert_eq!(items[0].name, "apple".to_string());
+        assert_eq!(items[1].name, "pear".to_string());
     }
 
     async fn test_count(db: &Db, chat_id: i64) {
