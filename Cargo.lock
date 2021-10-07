@@ -1671,7 +1671,7 @@ dependencies = [
 
 [[package]]
 name = "the-black-box-bot"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "anyhow",
  "async_once",
