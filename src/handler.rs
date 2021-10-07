@@ -7,7 +7,7 @@ use async_once::AsyncOnce;
 use lazy_static::lazy_static;
 use teloxide::utils::{command::BotCommand, markdown};
 use teloxide::{adaptors::DefaultParseMode, prelude::*};
-use std::{thread, time::Duration};
+use tokio::time::{sleep, Duration};
 
 lazy_static! {
     static ref DB: AsyncOnce<Db> = AsyncOnce::new(async { Db::from_env().await });
@@ -175,7 +175,8 @@ async fn delay(text: &str) -> Result<String> {
         return Ok(format!("Maximum value is 60 secs"));
     } 
 
-    thread::sleep(Duration::from_secs(secs));
+    // thread::sleep(Duration::from_secs(secs));
+    sleep(Duration::from_secs(secs)).await;
 
     Ok(format!("I waited *{}* seconds before answering you", secs))
 }
