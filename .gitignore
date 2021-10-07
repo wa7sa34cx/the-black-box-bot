@@ -1,6 +1,6 @@
 /target
 /auxiliary
 .env
-/db/prod/*.db*
+/db
 .DS_Store
 *copy.rs
