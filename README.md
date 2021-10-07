@@ -1,7 +1,7 @@
 # The Black Box bot
 
 This is the **Black Box** telegram bot written in Rust. You can hold any items in it.
-Try it here: [https://t.me/the_black_box_bot](https://t.me/the_black_box_bot)
+Just try: [@the_black_box_bot](https://t.me/the_black_box_bot)
 
 ## Usage
 
