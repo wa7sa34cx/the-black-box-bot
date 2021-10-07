@@ -7,6 +7,7 @@ use async_once::AsyncOnce;
 use lazy_static::lazy_static;
 use teloxide::utils::{command::BotCommand, markdown};
 use teloxide::{adaptors::DefaultParseMode, prelude::*};
+use std::{thread, time::Duration};
 
 lazy_static! {
     static ref DB: AsyncOnce<Db> = AsyncOnce::new(async { Db::from_env().await });
@@ -22,6 +23,7 @@ pub enum Command {
     Look,
     Count,
     Shake,
+    Delay(String),
 }
 
 type Bot = AutoSend<DefaultParseMode<teloxide::Bot>>;
@@ -31,20 +33,22 @@ type Cx = UpdateWithCx<Bot, Message>;
 pub async fn handler(cx: Cx) -> Result<()> {
     let chat_id = cx.update.chat_id();
 
-    let text = cx.update.text();
-    if text.is_none() {
-        answer(&cx, "I don't know what to reply 🤷‍♂️\nTry /help command").await?;
-        return Ok(());
-    }
+    let text = match cx.update.text() {
+        None => {
+            answer(&cx, "I don't know what to reply 🤷‍♂️\nTry /help command").await?;
+            return Ok(());
+        }
+        Some(text) => text,
+    };
 
-    let text = text.unwrap();
-    let command = Command::parse(text, "bot_name");
-    if command.is_err() {
-        answer(&cx, "I don't know this command 😕").await?;
-        return Ok(());
-    }
+    let command = match Command::parse(text, "bot_name") {
+        Err(_) => {
+            answer(&cx, "I don't know this command 😕").await?;
+            return Ok(());
+        }
+        Ok(command) => command,
+    };
 
-    let command = command.unwrap();
     let ans = match command {
         Command::Start => start().await?,
         Command::Help => help().await?,
@@ -53,6 +57,7 @@ pub async fn handler(cx: Cx) -> Result<()> {
         Command::Look => look(chat_id).await?,
         Command::Count => count(chat_id).await?,
         Command::Shake => shake(chat_id).await?,
+        Command::Delay(text) => delay(&text).await?,
     };
 
     answer(&cx, &ans).await?;
@@ -63,7 +68,7 @@ pub async fn handler(cx: Cx) -> Result<()> {
 // Display greeting
 async fn start() -> Result<String> {
     Ok(format!(
-        "This is the *Black Box*\\. You can hold any items in it\\.\nType /help for help\\.",
+        "This is the *Black Box*\\. You can hold any items in it\\. Type /help for help\\.",
     ))
 }
 
@@ -71,11 +76,11 @@ async fn start() -> Result<String> {
 async fn help() -> Result<String> {
     Ok(format!(
         "These commands are supported:\n\n\
-        /put *some item* \\- Put item\n\
-        /take *some item* \\- Take item\n\
-        /look \\- Look into\n\
-        /shake \\- Shake items out\n\
-        /count \\- Count items\n\
+        /put *some item* \\- Put item\n\n\
+        /take *some item* \\- Take item\n\n\
+        /look \\- Look into\n\n\
+        /shake \\- Shake items out\n\n\
+        /count \\- Count items\n\n\
         /help \\- Display help info
     "
     ))
@@ -157,6 +162,22 @@ async fn shake(chat_id: i64) -> Result<String> {
     DB.get().await.shake(chat_id).await?;
 
     Ok(format!("The Black Box is now empty"))
+}
+
+// Delay for testing concurrency
+async fn delay(text: &str) -> Result<String> {
+    let secs: u64 = match text.parse() {
+        Err(_) => return Ok(format!("Please use this format:\n\n /delay *secs*")),
+        Ok(num) => num,
+    };
+
+    if secs > 60 {
+        return Ok(format!("Maximum value is 60 secs"));
+    } 
+
+    thread::sleep(Duration::from_secs(secs));
+
+    Ok(format!("I waited *{}* seconds before answering you", secs))
 }
 
 // Send answer

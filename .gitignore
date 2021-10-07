@@ -3,3 +3,4 @@
 .env
 /db/prod/*.db*
 .DS_Store
+*copy.rs
