@@ -11,12 +11,13 @@ use std::env;
 
 type Pool = SqlitePool;
 
+/// Asyncronous database
 pub struct Db {
     pool: Pool,
 }
 
 impl Db {
-    /// Initialize database
+    /// Initialize database from str
     #[allow(unused)]
     pub async fn new(database_url: &str) -> Self {
         dotenv().ok();
@@ -25,7 +26,7 @@ impl Db {
         Self { pool }
     }
 
-    /// Initialize database
+    /// Initialize database from env
     pub async fn from_env() -> Self {
         dotenv().ok();
         let pool = Pool::connect(&env::var("DATABASE_URL").unwrap())
@@ -36,9 +37,9 @@ impl Db {
     }
 
     /// Get all items by chat_id
-    pub async fn look(&self, item: &Item) -> Result<Vec<Item>> {
+    pub async fn look(&self, chat_id: i64) -> Result<Vec<Item>> {
         let sql = SqlBuilder::select_from("items")
-            .and_where_eq("chat_id", item.chat_id)
+            .and_where_eq("chat_id", chat_id)
             .order_asc("id")
             .sql()?;
 
@@ -77,6 +78,29 @@ impl Db {
 
         Ok(())
     }
+
+    /// Count items
+    pub async fn count(&self, chat_id: i64) -> Result<i64> {
+        let sql = SqlBuilder::select_from("items")
+            .count("id")
+            .and_where_eq("chat_id", chat_id)
+            .sql()?;
+
+        let row: (i64,) = sqlx::query_as(&sql).fetch_one(&self.pool).await?;
+
+        Ok(row.0)
+    }
+
+    /// Delete all items
+    pub async fn shake(&self, chat_id: i64) -> Result<()> {
+        let sql = SqlBuilder::delete_from("items")
+            .and_where_eq("chat_id", chat_id)
+            .sql()?;
+
+        sqlx::query(&sql).execute(&self.pool).await?;
+
+        Ok(())
+    }
 }
 
 #[cfg(test)]
@@ -84,38 +108,66 @@ mod tests {
     use super::*;
 
     #[tokio::test]
-    async fn test_look() {
+    async fn test_db() {
         let db = Db::new("sqlite://db/test/blackbox.db").await;
+        let chat_id = 42;
 
-        let item = Item {
-            id: 0,
-            chat_id: 13,
-            name: String::new(),
-        };
-
-        let items = db.look(&item).await.unwrap();
-
-        assert_eq!(
-            items,
-            vec![Item {
-                id: 1,
-                chat_id: 13,
-                name: "hello".to_string(),
-            }]
-        );
+        test_put(&db, chat_id).await;
+        test_look(&db, chat_id).await;
+        test_count(&db, chat_id).await;
+        test_take(&db, chat_id).await;
+        test_shake(&db, chat_id).await;
     }
 
-    #[tokio::test]
-    async fn test_put_and_take() {
-        let db = Db::new("sqlite://db/test/blackbox.db").await;
-
+    async fn test_put(db: &Db, chat_id: i64) {
         let item = Item {
-            id: 0,
-            chat_id: 99,
-            name: String::from("test"),
+            id: 1,
+            chat_id,
+            name: "apple".to_string(),
         };
 
         assert_eq!(db.put(&item).await.unwrap(), ());
-        assert_eq!(db.take(&item).await.unwrap(), ());
+
+        let item = Item {
+            id: 2,
+            chat_id,
+            name: "pear".to_string(),
+        };
+
+        assert_eq!(db.put(&item).await.unwrap(), ());
+    }
+
+    async fn test_look(db: &Db, chat_id: i64) {
+        let items = db.look(chat_id).await.unwrap();
+
+        assert_eq!(
+            items,
+            vec![
+                Item {
+                    id: 1,
+                    chat_id,
+                    name: "apple".to_string(),
+                },
+                Item {
+                    id: 2,
+                    chat_id,
+                    name: "pear".to_string(),
+                }
+            ]
+        );
+    }
+
+    async fn test_count(db: &Db, chat_id: i64) {
+        assert_eq!(db.count(chat_id).await.unwrap(), 2);
+    }
+
+    async fn test_take(db: &Db, chat_id: i64) {
+        let item = Item::new(chat_id, "apple");
+
+        assert_eq!(db.put(&item).await.unwrap(), ());
+    }
+
+    async fn test_shake(db: &Db, chat_id: i64) {
+        assert_eq!(db.shake(chat_id).await.unwrap(), ());
     }
 }

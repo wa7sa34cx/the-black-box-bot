@@ -1,13 +1,14 @@
-mod db;
-// mod handlers;
+//! Main module
 
-use anyhow::Result;
+mod db;
+mod handler;
+
 use dotenv::dotenv;
-// use handlers::messages;
+use handler::handler;
 use std::env;
 use teloxide::{prelude::*, types::ParseMode};
 
-async fn run() -> Result<()> {
+async fn run() {
     teloxide::enable_logging!();
 
     dotenv().ok();
@@ -18,16 +19,10 @@ async fn run() -> Result<()> {
 
     log::info!("Starting bot...");
 
-    // Dispatcher::new(bot)
-    //     .messages_handler(messages::handler)
-    //     .setup_ctrlc_handler()
-    //     .dispatch()
-    //     .await;
-
-    Ok(())
+    teloxide::repl(bot, handler).await;
 }
 
 #[tokio::main]
-async fn main() -> Result<()> {
-    run().await
+async fn main() {
+    run().await;
 }
