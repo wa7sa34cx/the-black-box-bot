@@ -24,6 +24,9 @@ These commands are supported:
 
 ### Deployment
 
-1. Fork this repository
-1. Talk to [@Botfather](https://t.me/botfather) and go through some dialog options until you've successfully created a bot. You should receive a token in the format of `123456789:blablabla`
-1. Edit .env.example, put there your `DATABASE_URL` and `TELOXIDE_TOKEN`
+1. Fork this repository to your folder
+1. Talk to [@BotFather](https://t.me/botfather) and go through some dialog options until you've successfully created a bot. You should receive a token in the format of `123456789:blablabla`
+1. Edit `.env.example` by putting there your `DATABASE_URL` and `TELOXIDE_TOKEN`
+1. Rename `.env.example` to `.env`
+1. Run this command `sqlx migrate run`. It will create tables in your database
+1. Now after all these are set-up to run the bot just execute `cargo run` from your terminal.
