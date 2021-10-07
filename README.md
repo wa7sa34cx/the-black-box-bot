@@ -1,12 +1,13 @@
 # The Black Box bot
 
-This is the *Black Box* telegram bot written in Rust. You can hold any items in it. Try it here: [https://t.me/the_black_box_bot](https://t.me/the_black_box_bot)
+This is the *Black Box* telegram bot written in Rust. You can hold any items in it.
+Try it here: [https://t.me/the_black_box_bot](https://t.me/the_black_box_bot)
 
 ## Prerequisites
 
-- (Rust)[https://www.rust-lang.org/]
-- (SQLite)[https://sqlite.org/]
-- (Sqlx-cli)[https://github.com/launchbadge/sqlx/tree/master/sqlx-cli]
+- [Rust](https://www.rust-lang.org/)
+- [SQLite](https://sqlite.org/)
+- [Sqlx-cli](https://github.com/launchbadge/sqlx/tree/master/sqlx-cli)
 
 ## Deployment
 
