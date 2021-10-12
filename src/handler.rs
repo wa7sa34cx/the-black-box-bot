@@ -23,7 +23,7 @@ pub enum Command {
     Look,
     Count,
     Shake,
-    Delay(String),
+    Delay(u64),
 }
 
 type Bot = AutoSend<DefaultParseMode<teloxide::Bot>>;
@@ -57,7 +57,7 @@ pub async fn handler(cx: Cx) -> Result<()> {
         Command::Look => look(chat_id).await?,
         Command::Count => count(chat_id).await?,
         Command::Shake => shake(chat_id).await?,
-        Command::Delay(text) => delay(&text).await?,
+        Command::Delay(secs) => delay(secs).await?,
     };
 
     answer(&cx, &ans).await?;
@@ -171,17 +171,7 @@ async fn shake(chat_id: i64) -> Result<String> {
 }
 
 // Delay for testing concurrency
-async fn delay(text: &str) -> Result<String> {
-    let secs: u64 = match text.parse() {
-        Err(_) => {
-            return Ok(format!(
-                "Please use this format:\n\n /delay *{}*",
-                markdown::escape("<secs>")
-            ))
-        }
-        Ok(num) => num,
-    };
-
+async fn delay(secs: u64) -> Result<String> {
     if secs > 60 {
         return Ok(format!("Maximum value is 60 secs"));
     }
