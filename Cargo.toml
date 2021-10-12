@@ -1,7 +1,7 @@
 [package]
 name = "the-black-box-bot"
 description = "Put something in the Black Box, then take it!"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2018"
 authors = ["Alex Black <wa7@sa34.cx>"]
 license = "MIT OR Apache-2.0"
