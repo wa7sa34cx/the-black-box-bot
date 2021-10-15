@@ -1,7 +1,6 @@
 //! Handler module
 
-use crate::db::models::*;
-use crate::db::Db;
+use crate::db::{Db, models::*};
 use anyhow::Result;
 use async_once::AsyncOnce;
 use lazy_static::lazy_static;
