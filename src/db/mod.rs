@@ -7,7 +7,6 @@ use dotenv::dotenv;
 use models::*;
 use sql_builder::{quote, SqlBuilder};
 use sqlx::sqlite::SqlitePool;
-use std::env;
 
 type Pool = SqlitePool;
 
@@ -103,7 +102,7 @@ impl Db {
 
 fn get_env(env: &'static str) -> String {
     dotenv().ok();
-    env::var(env).unwrap_or_else(|_| panic!("Cannot get the {} env variable", env))
+    std::env::var(env).unwrap_or_else(|_| panic!("Cannot get the {} env variable", env))
 }
 
 #[cfg(test)]
