@@ -30,5 +30,5 @@ These commands are supported:
 1. Rename `.env.example` to `.env`
 1. Create database with command `sqlx database create`
 1. Run this command `sqlx migrate run`. It will create tables in your database.
-1. Run this command `cargo test` to test database manipulation.
+1. Run this command `cargo test` to test database manipulations.
 1. Now, after all these preparations, just execute `cargo run` from your terminal.
