@@ -28,7 +28,7 @@ pub enum Command {
 type Bot = AutoSend<DefaultParseMode<teloxide::Bot>>;
 type Cx = UpdateWithCx<Bot, Message>;
 
-/// Main handler
+/// Main handler.
 pub async fn handler(cx: Cx) -> Result<()> {
     let chat_id = cx.update.chat_id();
 
@@ -64,14 +64,14 @@ pub async fn handler(cx: Cx) -> Result<()> {
     Ok(())
 }
 
-// Display greeting
+// Displays the greeting.
 async fn start() -> Result<String> {
     Ok(format!(
         "This is the *Black Box*\\. You can hold any items in it\\. Type /help for help\\.",
     ))
 }
 
-// Display help info
+// Displays help info.
 async fn help() -> Result<String> {
     Ok(markdown::escape(
         "These commands are supported:\n\n\
@@ -85,7 +85,7 @@ async fn help() -> Result<String> {
     ))
 }
 
-// Put item
+// Puts item.
 async fn put(chat_id: i64, text: &str) -> Result<String> {
     if text.is_empty() {
         return Ok(format!(
@@ -103,7 +103,7 @@ async fn put(chat_id: i64, text: &str) -> Result<String> {
     ))
 }
 
-// Take item
+// Takes item.
 async fn take(chat_id: i64, text: &str) -> Result<String> {
     if text.is_empty() {
         return Ok(format!(
@@ -125,7 +125,7 @@ async fn take(chat_id: i64, text: &str) -> Result<String> {
     }
 }
 
-// Look into
+// Looks into.
 async fn look(chat_id: i64) -> Result<String> {
     let items = DB.get().await.look(chat_id).await?;
 
@@ -151,7 +151,7 @@ async fn look(chat_id: i64) -> Result<String> {
     ))
 }
 
-// Count items
+// Counts items.
 async fn count(chat_id: i64) -> Result<String> {
     let count = DB.get().await.count(chat_id).await?;
 
@@ -162,26 +162,26 @@ async fn count(chat_id: i64) -> Result<String> {
     }
 }
 
-// Shake out
+// Shakes all items out.
 async fn shake(chat_id: i64) -> Result<String> {
     DB.get().await.shake(chat_id).await?;
 
     Ok(format!("The Black Box is now empty"))
 }
 
-// Delay for testing concurrency
+// Answers with delay (for testing concurrency).
 async fn delay(secs: u64) -> Result<String> {
     if secs > 60 {
         return Ok(format!("Maximum value is 60 secs"));
     }
 
-    // thread::sleep(Duration::from_secs(secs));
+    // thread::sleep(Duration::from_secs(secs)); // Bad practice!
     sleep(Duration::from_secs(secs)).await;
 
     Ok(format!("I waited *{}* seconds before answering you", secs))
 }
 
-// Send answer
+// Sends answer.
 async fn answer(cx: &Cx, answer: &str) -> Result<()> {
     cx.answer(answer).await?;
 
