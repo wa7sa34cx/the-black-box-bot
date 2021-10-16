@@ -20,7 +20,6 @@ impl Db {
     /// Initialize database from str
     #[allow(unused)]
     pub async fn new(database_url: &str) -> Self {
-        dotenv().ok();
         let pool = Pool::connect(database_url).await.unwrap();
 
         Self { pool }
@@ -28,8 +27,7 @@ impl Db {
 
     /// Initialize database from env
     pub async fn from_env() -> Self {
-        dotenv().ok();
-        let pool = Pool::connect(&env::var("DATABASE_URL").unwrap())
+        let pool = Pool::connect(&get_env("DATABASE_URL"))
             .await
             .unwrap();
 
@@ -101,6 +99,11 @@ impl Db {
 
         Ok(())
     }
+}
+
+fn get_env(env: &'static str) -> String {
+    dotenv().ok();
+    env::var(env).unwrap_or_else(|_| panic!("Cannot get the {} env variable", env))
 }
 
 #[cfg(test)]
