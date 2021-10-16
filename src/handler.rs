@@ -1,6 +1,6 @@
 //! Handler module
 
-use crate::db::{Db, models::*};
+use crate::db::{models::*, Db};
 use anyhow::Result;
 use async_once::AsyncOnce;
 use lazy_static::lazy_static;
@@ -67,7 +67,8 @@ pub async fn handler(cx: Cx) -> Result<()> {
 // Displays the greeting.
 async fn start() -> Result<String> {
     Ok(format!(
-        "This is the *Black Box*\\. You can hold any items in it\\. Type /help for help\\.",
+        "This is the *Black Box*\\. You can hold any items in it\\. \
+        Type /help to view supported commands\\.",
     ))
 }
 

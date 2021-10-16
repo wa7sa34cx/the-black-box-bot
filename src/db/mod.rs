@@ -26,9 +26,7 @@ impl Db {
 
     /// Initialize database from env
     pub async fn from_env() -> Self {
-        let pool = Pool::connect(&get_env("DATABASE_URL"))
-            .await
-            .unwrap();
+        let pool = Pool::connect(&get_env("DATABASE_URL")).await.unwrap();
 
         Self { pool }
     }
