@@ -6,7 +6,7 @@ edition = "2018"
 authors = ["Alex Black <wa7@sa34.cx>"]
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/wa7sa34cx/the-black-box-bot"
-keywords = ["bot", "telegram"]
+keywords = ["bot", "telegram", "teloxide", "sqlite", "sqlx"]
 readme = "README.md"
 
 # See more keys and their definitions at
