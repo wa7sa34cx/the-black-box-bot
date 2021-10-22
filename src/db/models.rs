@@ -2,8 +2,11 @@
 /// It can be created by the `new` method.
 #[derive(sqlx::FromRow, Debug, PartialEq, Default)]
 pub struct Item {
+    /// Unique identifier for this item
     pub id: i64,
+    /// The owner of item
     pub chat_id: i64,
+    /// The name of item
     pub name: String,
 }
 
@@ -33,13 +36,13 @@ mod tests {
 
     #[test]
     fn new_item() {
-        let item = Item::new(42, "hello");
-        let expectation = Item {
+        let actual = Item::new(42, "hello");
+        let expected = Item {
             id: 0,
             chat_id: 42,
             name: "hello".to_owned(),
         };
 
-        assert_eq!(item, expectation);
+        assert_eq!(actual, expected);
     }
 }
