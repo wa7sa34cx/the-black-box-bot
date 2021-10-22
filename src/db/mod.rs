@@ -1,5 +1,8 @@
 //! Database module
-
+//!
+//! This module is used to work with the SQLite database 
+//! in asynchronous mode relying on crate [`sqlx`](https://docs.rs/sqlx/).
+//!
 pub mod models;
 
 use anyhow::Result;
