@@ -1,4 +1,4 @@
-/// This `struct` represents the model for items in the database. 
+/// This `struct` represents the model for items in the database.
 /// It can be created by the `new` method.
 #[derive(sqlx::FromRow, Debug, PartialEq, Default)]
 pub struct Item {
@@ -15,11 +15,14 @@ pub struct Item {
 /// let item = Item::new(42, "hello");
 /// ```
 impl Item {
-    pub fn new(chat_id: i64, name: &str) -> Self {
+    pub fn new<S>(chat_id: i64, name: S) -> Self
+    where
+        S: Into<String>,
+    {
         Self {
             id: 0,
             chat_id,
-            name: name.to_string(),
+            name: name.into(),
         }
     }
 }
