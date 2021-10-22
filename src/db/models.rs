@@ -2,11 +2,11 @@
 /// It can be created by the `new` method.
 #[derive(sqlx::FromRow, Debug, PartialEq, Default)]
 pub struct Item {
-    /// Unique identifier for this item
+    /// Unique identifier in the database
     pub id: i64,
-    /// The owner of item
+    /// Item owner
     pub chat_id: i64,
-    /// The name of item
+    /// Item name
     pub name: String,
 }
 
