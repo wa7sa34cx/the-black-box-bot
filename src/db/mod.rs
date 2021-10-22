@@ -1,5 +1,8 @@
 //! Database module
-
+//!
+//! This module is used to work with the SQLite database 
+//! in asynchronous mode relying on crate [`sqlx`](https://docs.rs/sqlx/).
+//!
 pub mod models;
 
 use anyhow::Result;
@@ -7,7 +10,6 @@ use dotenv::dotenv;
 use models::*;
 use sql_builder::{quote, SqlBuilder};
 use sqlx::sqlite::SqlitePool;
-use std::env;
 
 type Pool = SqlitePool;
 
@@ -20,7 +22,6 @@ impl Db {
     /// Initialize database from str
     #[allow(unused)]
     pub async fn new(database_url: &str) -> Self {
-        dotenv().ok();
         let pool = Pool::connect(database_url).await.unwrap();
 
         Self { pool }
@@ -28,10 +29,7 @@ impl Db {
 
     /// Initialize database from env
     pub async fn from_env() -> Self {
-        dotenv().ok();
-        let pool = Pool::connect(&env::var("DATABASE_URL").unwrap())
-            .await
-            .unwrap();
+        let pool = Pool::connect(&get_env("DATABASE_URL")).await.unwrap();
 
         Self { pool }
     }
@@ -101,6 +99,11 @@ impl Db {
 
         Ok(())
     }
+}
+
+fn get_env(env: &'static str) -> String {
+    dotenv().ok();
+    std::env::var(env).unwrap_or_else(|_| panic!("Cannot get the {} env variable", env))
 }
 
 #[cfg(test)]
