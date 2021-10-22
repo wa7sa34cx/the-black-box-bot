@@ -26,3 +26,20 @@ impl Item {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::db::models::*;
+
+    #[test]
+    fn new_item() {
+        let item = Item::new(42, "hello");
+        let expectation = Item {
+            id: 0,
+            chat_id: 42,
+            name: "hello".to_owned(),
+        };
+
+        assert_eq!(item, expectation);
+    }
+}
