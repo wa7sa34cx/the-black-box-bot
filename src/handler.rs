@@ -66,10 +66,11 @@ pub async fn handler(cx: Cx) -> Result<()> {
 
 // Displays the greeting.
 async fn start() -> Result<String> {
-    Ok(format!(
+    Ok(
         "This is the *Black Box*\\. You can hold any items in it\\. \
-        Type /help to view supported commands\\.",
-    ))
+        Type /help to view supported commands\\."
+            .to_string(),
+    )
 }
 
 // Displays help info.
@@ -117,7 +118,7 @@ async fn take(chat_id: i64, text: &str) -> Result<String> {
     match DB.get().await.take(&item).await {
         Err(e) => {
             log::warn!("{}", e);
-            Ok(format!("There is no such item in the Black Box 🤷‍♂️"))
+            Ok("There is no such item in the Black Box 🤷‍♂️".to_string())
         }
         Ok(_) => Ok(format!(
             "You took *{}* out of the Black Box",
@@ -131,7 +132,7 @@ async fn look(chat_id: i64) -> Result<String> {
     let items = DB.get().await.look(chat_id).await?;
 
     if items.is_empty() {
-        return Ok(format!("There aren't any items in the Black Box 🤷‍♂️"));
+        return Ok("There aren't any items in the Black Box 🤷‍♂️".to_string());
     }
 
     if items.len() == 1 {
@@ -157,9 +158,9 @@ async fn count(chat_id: i64) -> Result<String> {
     let count = DB.get().await.count(chat_id).await?;
 
     match count {
-        0 => return Ok(format!("There aren't any items in the Black Box 🤷‍♂️")),
-        1 => return Ok(format!("There is *one* item in the Black Box")),
-        n => return Ok(format!("There are *{}* items in the Black Box", n)),
+        0 => Ok("There aren't any items in the Black Box 🤷‍♂️".to_string()),
+        1 => Ok("There is *one* item in the Black Box".to_string()),
+        n => Ok(format!("There are *{}* items in the Black Box", n)),
     }
 }
 
@@ -167,13 +168,13 @@ async fn count(chat_id: i64) -> Result<String> {
 async fn shake(chat_id: i64) -> Result<String> {
     DB.get().await.shake(chat_id).await?;
 
-    Ok(format!("The Black Box is now empty"))
+    Ok("The Black Box is now empty".to_string())
 }
 
 // Answers with delay (for testing concurrency).
 async fn delay(secs: u64) -> Result<String> {
     if secs > 60 {
-        return Ok(format!("Maximum value is 60 secs"));
+        return Ok("Maximum value is 60 secs".to_string());
     }
 
     // thread::sleep(Duration::from_secs(secs)); // Bad practice!
